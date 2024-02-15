@@ -1,6 +1,7 @@
 "use client";
 import { TextInput, Button, MultiSelect, FileInput, FileInputProps, Pill } from "@mantine/core";
 import { notifications } from "@mantine/notifications";
+import Image from "next/image";
 import { useState } from "react";
 
 
@@ -131,7 +132,7 @@ return (
         alignItems: "center",
       }}
     >
-      <img
+      <Image
         src="https://picsum.photos/200/300"
         alt="Placeholder Logo"
         style={{ width: "204px", height: "204px", marginBottom: "4px" }}
