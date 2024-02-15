@@ -133,8 +133,10 @@ return (
       }}
     >
       <Image
-        src="https://picsum.photos/200/300"
+        src={URL("https://picsum.photos/200/300")}
         alt="Placeholder Logo"
+        width={204}
+        height={204}
         style={{ width: "204px", height: "204px", marginBottom: "4px" }}
       />
     </div>
