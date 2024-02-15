@@ -36,7 +36,7 @@ const ValueComponent: FileInputProps['valueComponent'] = ({ value }) => {
   return <Pill>{value.name}</Pill>;
 };
 
-const handleSubmit = async (teamMembers: string[], projectTitle: string, abstractDoc: File, researchPaperDocs: File[]) => {
+const handleSubmit = async (teamMembers: string[], projectTitle: string, abstractDoc: File | null, researchPaperDocs: File[]) => {
   if(!projectTitle) {
     notifications.show({
       title: 'Error',
@@ -171,6 +171,7 @@ return (
     clearable 
     label="Abstract"
     placeholder="Upload files"
+    accept="application/pdf" 
     onChange={setAbstractFile}
     value={abstractFile}
     valueComponent={ValueComponent}
@@ -178,7 +179,8 @@ return (
 
   <FileInput
     withAsterisk
-    clearable 
+    clearable
+    accept="application/pdf" 
     label="Supporting Research Papers"
     placeholder="Upload files"
     multiple
@@ -187,16 +189,9 @@ return (
     onChange={setResearchPapers}
   />
     <Button type="submit" mt="md" onClick={() =>{
-     if(abstractFile) {
+     
       handleSubmit(selected, projectTitle, abstractFile, researchPapers); 
-    }
-    else{
-      notifications.show({
-        title: 'Error',
-        color: "red",
-        message: 'Abstract file is required'
-      })
-    }
+    
     }}>
       Submit
     </Button>
