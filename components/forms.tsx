@@ -133,7 +133,7 @@ return (
       }}
     >
       <Image
-        src={URL("https://picsum.photos/200/300")}
+        src="https://picsum.photos/200/300"
         alt="Placeholder Logo"
         width={204}
         height={204}
