@@ -133,7 +133,7 @@ return (
       }}
     >
       <Image
-        src="https://picsum.photos/200/300"
+        src="/putin.webp"
         alt="Placeholder Logo"
         width={204}
         height={204}
