@@ -2,10 +2,11 @@ import "@mantine/core/styles.css";
 import React from "react";
 import { MantineProvider, ColorSchemeScript } from "@mantine/core";
 import { theme } from "../theme";
-
+import '@mantine/notifications/styles.css';
+import { Notifications } from "@mantine/notifications";
 export const metadata = {
-  title: "Mantine Next.js template",
-  description: "I am using Mantine with Next.js!",
+  title: "Form",
+  description: "This a form for project submission",
 };
 
 export default function RootLayout({ children }: { children: any }) {
@@ -20,7 +21,10 @@ export default function RootLayout({ children }: { children: any }) {
         />
       </head>
       <body>
-        <MantineProvider theme={theme}>{children}</MantineProvider>
+        <MantineProvider theme={theme} defaultColorScheme="dark">
+        <Notifications />
+          {children}
+          </MantineProvider>
       </body>
     </html>
   );
