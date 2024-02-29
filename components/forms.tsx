@@ -6,7 +6,7 @@ import { useState } from "react";
 
 
 export function Form() {
-const [selected, setSelected] = useState<string[]>([]);
+const [teamCode, setTeamCode] = useState<string>('');
 const [projectTitle, setProjectTitle] = useState<string>('');
 const [abstractFile, setAbstractFile] = useState<File | null>(null);
 const [researchPapers, setResearchPapers] = useState<File[]>([]);
@@ -36,7 +36,7 @@ const ValueComponent: FileInputProps['valueComponent'] = ({ value }) => {
   return <Pill>{value.name}</Pill>;
 };
 
-const handleSubmit = async (teamMembers: string[], projectTitle: string, abstractDoc: File | null, researchPaperDocs: File[]) => {
+const handleSubmit = async (teamCode: string, projectTitle: string, abstractDoc: File | null, researchPaperDocs: File[]) => {
   if(!projectTitle) {
     notifications.show({
       title: 'Error',
@@ -46,11 +46,11 @@ const handleSubmit = async (teamMembers: string[], projectTitle: string, abstrac
     return
   }
 
-  if(teamMembers.length === 0) {
+  if(!teamCode) {
     notifications.show({
       title: 'Error',
       color: "red",
-      message: 'Please select at least one team member'
+      message: 'Please enter team code'
     })
     return
   }
@@ -75,11 +75,12 @@ const handleSubmit = async (teamMembers: string[], projectTitle: string, abstrac
 
   const formData = new FormData();
   formData.append('title', projectTitle);
-  formData.append('teamMembers', teamMembers.join(','));
+  formData.append('teamMembers', teamCode);
   formData.append('abstract', abstractDoc);
   researchPaperDocs.forEach(paper => {
   formData.append('researchPapers', paper); 
   });
+  console.log(researchPaperDocs);
   const submit = await fetch("/api/submit", {
     method: "POST",
     body: formData,
@@ -133,11 +134,11 @@ return (
       }}
     >
       <Image
-        src="/putin.webp"
+        src="/mascot-logo.jpg"
         alt="Placeholder Logo"
         width={204}
         height={204}
-        style={{ width: "204px", height: "204px", marginBottom: "4px" }}
+        style={{ width: "274px", height: "204px", marginBottom: "4px" }}
       />
     </div>
     <TextInput
@@ -151,19 +152,15 @@ return (
       }}
     />
 
-    <MultiSelect
-    required
-    
-    label="Team Members"
-    withAsterisk
-    placeholder="Pick value"
-    data={students}
-    searchable
-    nothingFoundMessage="Nothing found..."
-    hidePickedOptions
-    comboboxProps={{ transitionProps: { transition: 'pop', duration: 200 } }}
-    value={selected}
-    onChange={setSelected}
+    <TextInput
+      minLength={5}
+      withAsterisk
+      label="Team Code"
+      placeholder="Enter team code"
+      value={teamCode}
+      onChange={(event) => {
+        setTeamCode(event.target.value);
+      }}
     />
 
   <FileInput
@@ -190,7 +187,7 @@ return (
   />
     <Button type="submit" mt="md" onClick={() =>{
      
-      handleSubmit(selected, projectTitle, abstractFile, researchPapers); 
+      handleSubmit(teamCode, projectTitle, abstractFile, researchPapers); 
     
     }}>
       Submit
