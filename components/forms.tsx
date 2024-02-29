@@ -1,5 +1,5 @@
 "use client";
-import { TextInput, Button, MultiSelect, FileInput, FileInputProps, Pill } from "@mantine/core";
+import { TextInput, Button, FileInput, FileInputProps, Pill } from "@mantine/core";
 import { notifications } from "@mantine/notifications";
 import Image from "next/image";
 import { useState } from "react";
