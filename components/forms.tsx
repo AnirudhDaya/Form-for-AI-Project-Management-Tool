@@ -2,7 +2,7 @@
 import { TextInput, Button, FileInput, FileInputProps, Pill } from "@mantine/core";
 import { notifications } from "@mantine/notifications";
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 
 export function Form() {
@@ -10,6 +10,9 @@ const [teamCode, setTeamCode] = useState<string>('');
 const [projectTitle, setProjectTitle] = useState<string>('');
 const [abstractFile, setAbstractFile] = useState<File | null>(null);
 const [researchPapers, setResearchPapers] = useState<File[]>([]);
+const [projectNames, setprojectNames] = useState<String[]>([]);
+const [existingTeamCode, setexistingTeamCode] = useState<String[]>([]);
+const formData = new FormData();  
 
 const students = [
   "Anirudh Dayanandan",
@@ -73,21 +76,39 @@ const handleSubmit = async (teamCode: string, projectTitle: string, abstractDoc:
     return; 
   }
 
-  const formData = new FormData();
+  if(existingTeamCode.includes(teamCode)){
+    if(projectNames.includes(projectTitle)) {
+      notifications.show({
+        title: "Whoops",
+        message: "A project with the same was already submitted by your team",
+        color: "yellow",
+      });
+      return;
+    }
+  }
+  if(projectNames.includes(projectTitle)) {
+    notifications.show({
+      title: "Whoops",
+      message: "A project with the same was already submitted by someone else.",
+      color: "yellow",
+    });
+    return;
+  }
   formData.append('title', projectTitle);
-  formData.append('teamMembers', teamCode);
+  formData.append('teamCode', teamCode);
   formData.append('abstract', abstractDoc);
   researchPaperDocs.forEach(paper => {
   formData.append('researchPapers', paper); 
   });
-  console.log(researchPaperDocs);
-  const submit = await fetch("/api/submit", {
+  console.log(formData);
+  const submit = await fetch("https://pmt-inajc.ondigitalocean.app/form/", {
     method: "POST",
     body: formData,
   });
-
+  const resp = await submit.json()
+  console.log(resp);
   if (submit.status === 200) {
-    console.log("Form submitted successfully:", submit.text);
+    console.log("Form submitted successfully:", resp['message']);
 
     // Show success notification
     try {
@@ -100,13 +121,13 @@ const handleSubmit = async (teamCode: string, projectTitle: string, abstractDoc:
       console.error("Error showing success notification:", error);
     }
   } else {
-    console.error("Error submitting form:", submit.statusText);
+    console.error("Error submitting form:", resp['message']);
 
     // Show error notification
     try {
       notifications.show({
         title: "Error",
-        message: "An error occurred while submitting the form.",
+        message: resp['message'],
         color: "red",
       });
     } catch (error) {
@@ -114,6 +135,28 @@ const handleSubmit = async (teamCode: string, projectTitle: string, abstractDoc:
     }
   }
 };
+
+useEffect(() => {
+  const fetchData = async () => {
+    const name_codes = await fetch("https://pmt-inajc.ondigitalocean.app/getProjects/", {
+      method: "GET",
+    });
+    const team_deets = await name_codes.json();
+    setprojectNames(team_deets.Titles)
+    setexistingTeamCode(team_deets["Team Codes"]);
+    // Handle the response or any other logic here
+  };
+  fetchData();
+}, []);
+
+useEffect(() => {
+
+}, [projectNames]);
+
+useEffect(() => {
+
+}, [existingTeamCode]);
+
 
 return (
   <div
