@@ -101,7 +101,7 @@ const handleSubmit = async (teamCode: string, projectTitle: string, abstractDoc:
   formData.append('researchPapers', paper); 
   });
   console.log(formData);
-  const submit = await fetch("https://pmt-inajc.ondigitalocean.app/form/", {
+  const submit = await fetch("https://proma-ai-uw7kj.ondigitalocean.app/form/", {
     method: "POST",
     body: formData,
   });
@@ -138,7 +138,7 @@ const handleSubmit = async (teamCode: string, projectTitle: string, abstractDoc:
 
 useEffect(() => {
   const fetchData = async () => {
-    const name_codes = await fetch("https://pmt-inajc.ondigitalocean.app/getProjects/", {
+    const name_codes = await fetch("https://proma-ai-uw7kj.ondigitalocean.app/getProjects/", {
       method: "GET",
     });
     const team_deets = await name_codes.json();
