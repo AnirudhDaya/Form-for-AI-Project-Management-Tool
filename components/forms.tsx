@@ -177,11 +177,11 @@ return (
       }}
     >
       <Image
-        src="/mascot-logo.jpg"
+        src="/PromaLogo.png"
         alt="Placeholder Logo"
         width={204}
         height={204}
-        style={{ width: "274px", height: "204px", marginBottom: "4px" }}
+        style={{ width: "274px", height: "104px", marginBottom: "4px" }}
       />
     </div>
     <TextInput
