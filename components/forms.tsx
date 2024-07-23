@@ -75,7 +75,7 @@ const handleSubmit = async (teamCode: string, projectTitle: string, abstractDoc:
     });
     return; 
   }
-
+  console.log(existingTeamCode);
   if(existingTeamCode.includes(teamCode)){
     if(projectNames.includes(projectTitle)) {
       notifications.show({
@@ -100,8 +100,9 @@ const handleSubmit = async (teamCode: string, projectTitle: string, abstractDoc:
   researchPaperDocs.forEach(paper => {
   formData.append('researchPapers', paper); 
   });
-  console.log(formData);
-  const submit = await fetch("https://proma-ai-uw7kj.ondigitalocean.app/form/", {
+  console.log(formData.getAll("title"));
+  console.log(formData.getAll("teamCode"));
+  const submit = await fetch("https://pmt-u972l.ondigitalocean.app/form/", {
     method: "POST",
     body: formData,
   });
@@ -138,7 +139,7 @@ const handleSubmit = async (teamCode: string, projectTitle: string, abstractDoc:
 
 useEffect(() => {
   const fetchData = async () => {
-    const name_codes = await fetch("https://proma-ai-uw7kj.ondigitalocean.app/getProjects/", {
+    const name_codes = await fetch("https://pmt-u972l.ondigitalocean.app/getProjects/", {
       method: "GET",
     });
     const team_deets = await name_codes.json();
